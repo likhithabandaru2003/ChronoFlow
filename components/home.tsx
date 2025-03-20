@@ -17,8 +17,8 @@ import { Timer, TimerStatus } from "../app/(tabs)/types";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MaterialIcons, FontAwesome } from "@expo/vector-icons"; // For icons
-import { LinearGradient } from "expo-linear-gradient"; // For gradient backgrounds
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { HomeStyles as styles } from '../app/styles/Home';
 
 const HomeScreen = () => {
@@ -27,8 +27,8 @@ const HomeScreen = () => {
   const [duration, setDuration] = useState("");
   const [durationUnit, setDurationUnit] = useState<"seconds" | "minutes" | "hours">("seconds");
   const [category, setCategory] = useState("Work");
-  const [customCategory, setCustomCategory] = useState(""); // For custom category input
-  const [timerName, setTimerName] = useState(""); // For timer name input
+  const [customCategory, setCustomCategory] = useState("");
+  const [timerName, setTimerName] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
   const [showCompletionModal, setShowCompletionModal] = useState(false); // For completion modal
   const [completedTimerDetails, setCompletedTimerDetails] = useState<Timer | null>(null); // For completion modal
@@ -110,7 +110,7 @@ const HomeScreen = () => {
 
     const newTimer: Timer = {
       id: uuidv4(),
-      name: timerName, // Add timer name
+      name: timerName,
       duration: convertToSeconds(Number(duration), durationUnit),
       remaining: convertToSeconds(Number(duration), durationUnit),
       status: TimerStatus.Running,
@@ -136,8 +136,8 @@ const HomeScreen = () => {
 
             // Check if the timer has reached halfway
             if (newRemaining === Math.floor(timer.duration / 2)) {
-              setHalfwayTimerDetails(timer); // Store the timer details
-              setShowHalfwayModal(true); // Show the halfway modal
+              setHalfwayTimerDetails(timer);
+              setShowHalfwayModal(true);
             }
 
             return { ...timer, remaining: newRemaining };
@@ -202,8 +202,8 @@ const HomeScreen = () => {
                   ? TimerStatus.Running
                   : action === "pause"
                   ? TimerStatus.Paused
-                  : TimerStatus.Paused, // Reset action will also set to paused
-              remaining: action === "reset" ? timer.duration : timer.remaining, // Reset timers to original duration
+                  : TimerStatus.Paused,
+              remaining: action === "reset" ? timer.duration : timer.remaining,
             }
           : timer
       )
@@ -249,7 +249,7 @@ const HomeScreen = () => {
             renderItem={({ item }) => (
               <TimerItem timer={item} onPause={handlePauseResumeTimer} onReset={handleResetTimer} />
             )}
-            scrollEnabled={false} // Disable scrolling for FlatList
+            scrollEnabled={false} 
           />
         )}
       </View>

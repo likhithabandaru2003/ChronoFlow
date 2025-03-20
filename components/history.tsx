@@ -9,16 +9,16 @@ import {
   Alert
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Timer } from "../app/(tabs)/types"; // Replace this path with your actual types
-import { useFocusEffect } from "@react-navigation/core"; // Import useFocusEffect
-import { LinearGradient } from "expo-linear-gradient"; // For gradient background
-import * as FileSystem from "expo-file-system"; // For file system operations
-import * as Sharing from "expo-sharing"; // For sharing files
+import { Timer } from "../app/(tabs)/types";
+import { useFocusEffect } from "@react-navigation/core";
+import { LinearGradient } from "expo-linear-gradient";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 import { HistoryStyles as styles } from '../app/styles/History';
 
 const HistoryScreen = () => {
   const [completedTimers, setCompletedTimers] = useState<Timer[]>([]);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null); // Tracks expanded category
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   // Function to load completed timers from AsyncStorage
   const loadCompletedTimers = async () => {
@@ -37,21 +37,20 @@ const HistoryScreen = () => {
     loadCompletedTimers();
   }, []);
 
-  // Reload the completed timers when the screen is focused
   useFocusEffect(
     React.useCallback(() => {
-      loadCompletedTimers(); // Reload timers whenever the screen is focused
+      loadCompletedTimers();
     }, [])
   );
 
   // Group the timers by category
   const groupByCategory = () => {
     return completedTimers
-      .slice() // Create a copy to avoid mutating state
+      .slice()
       .sort(
         (a, b) =>
           new Date(b.completedAt ?? 0).getTime() - new Date(a.completedAt ?? 0).getTime()
-      ) // Handle potential undefined
+      )
       .reduce<Record<string, Timer[]>>((acc, timer) => {
         if (!acc[timer.category]) {
           acc[timer.category] = [];
@@ -66,19 +65,18 @@ const HistoryScreen = () => {
   // Handle expanding or collapsing a category when clicked
   const handleCategoryToggle = (category: string) => {
     if (expandedCategory === category) {
-      setExpandedCategory(null); // If the category is already expanded, collapse it
+      setExpandedCategory(null);
     } else {
-      setExpandedCategory(category); // Expand the selected category
+      setExpandedCategory(category); 
     }
   };
 
   // Export timer history as a JSON file
   const exportTimerHistory = async () => {
     try {
-      const jsonString = JSON.stringify(completedTimers, null, 2); // Convert timers to JSON string
-      const fileUri = FileSystem.documentDirectory + "timer_history.json"; // Define file path
+      const jsonString = JSON.stringify(completedTimers, null, 2);
+      const fileUri = FileSystem.documentDirectory + "timer_history.json";
 
-      // Write the JSON string to a file
       await FileSystem.writeAsStringAsync(fileUri, jsonString, {
         encoding: FileSystem.EncodingType.UTF8,
       });
@@ -86,8 +84,8 @@ const HistoryScreen = () => {
       // Share the file
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(fileUri, {
-          mimeType: "application/json", // Set MIME type for JSON
-          dialogTitle: "Export Timer History", // Dialog title
+          mimeType: "application/json",
+          dialogTitle: "Export Timer History",
         });
       } else {
         Alert.alert("Sharing is not available on this device.");
@@ -115,13 +113,12 @@ const HistoryScreen = () => {
         {/* Category Sections */}
         {Object.keys(groupedTimers).map((category) => (
           <View key={category} style={styles.categorySection}>
-            {/* Tab for Category */}
             <TouchableOpacity
               style={styles.tab}
               onPress={() => handleCategoryToggle(category)}
             >
               <Text style={styles.categoryHeading}>
-                {category} {expandedCategory === category ? "▲" : "▼"} {/* Arrow icon */}
+                {category} {expandedCategory === category ? "▲" : "▼"}
               </Text>
             </TouchableOpacity>
 
@@ -140,7 +137,7 @@ const HistoryScreen = () => {
                     </Text>
                   </View>
                 )}
-                scrollEnabled={false} // Disable scrolling for FlatList
+                scrollEnabled={false}
               />
             )}
           </View>
