@@ -15,6 +15,7 @@
     },
     "ios": {
       "supportsTablet": true
+
     },
     "android": {
       "adaptiveIcon": {
@@ -24,11 +25,12 @@
       "package": "com.likhitha2003.ChronoFlow"
     },
     "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png",
-      "assetPrefix": "./"
-    },
+  "bundler": "metro",
+  "output": "static",
+  "favicon": "./assets/images/favicon.png",
+  "assetPrefix": "./",
+  "basePath": "/ChronoFlow"
+},
     "plugins": [
       "expo-router"
     ],
